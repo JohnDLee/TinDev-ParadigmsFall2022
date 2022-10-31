@@ -9,3 +9,8 @@ Use
 - John Lee: `http://129.74.152.125:51062`
 - Mark Rumsey: `http://129.74.152.125:51090`
 - Chris Capone: `http://129.74.152.125:51019`
+
+Super User
+- Username: paradigms
+- Email: jlee88@nd.edu
+- Password: paradigms
