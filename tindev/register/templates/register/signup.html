@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Candidate Signup{% endblock %}
+
+{% block content %}
+<div class="div-center-large">
+    <div class="content">
+        <h3>Signup</h3>
+        <hr />
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username-candidate">Username</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <label for="id_password1-candidate">Password</label>
+                {{ form.password1 }}
+            </div>
+            <div class="form-group">
+                <label for="id_password2-candidate">Re-enter Password</label>
+                {{ form.password2 }}
+            </div>
+            <div class="form-group">
+                <label for="id_profile_type-candidate">Profile Type</label>
+                <div class = "form-check form-check-inline">
+                    {% for radio in form.profile_type %}
+                        {{ radio.tag }}
+                        <label class="form-check-label" for ="{{ radio.id_for_label }}"> {{ radio.choice_label }} </label>
+                    {% endfor %}
+                </div>
+               
+                
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <a href="/register/login"  class="btn btn-link" role="button">Back to Login</a>
+      </form>
+    </div>
+    </span>
+</div>
+
+{% endblock %}
