@@ -31,3 +31,7 @@
     padding: 1em 2em;
     display: table;
   }
+
+.signup-error {
+  color: red;
+}

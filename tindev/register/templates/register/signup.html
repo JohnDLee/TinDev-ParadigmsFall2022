@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "register_base.html" %}
 
 {% block title %}Candidate Signup{% endblock %}
 
@@ -12,14 +12,29 @@
             <div class="form-group">
                 <label for="id_username-candidate">Username</label>
                 {{ form.username }}
+                {% if username_err %}
+                <div style="color: red;">
+                    {{ username_err }}
+                </div>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="id_password1-candidate">Password</label>
                 {{ form.password1 }}
+                {% if password1_err %}
+                <div style="color: red;">
+                    {{ password1_err }}
+                </div>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="id_password2-candidate">Re-enter Password</label>
                 {{ form.password2 }}
+                {% if password2_err %}
+                <div style="color: red;">
+                    {{ password2_err }}
+                </div>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="id_profile_type-candidate">Profile Type</label>

@@ -31,8 +31,8 @@ ALLOWED_HOSTS = ['129.74.152.125']
 # Application definition
 
 INSTALLED_APPS = [
-    # 'candidate.apps.CandidateConfig',
-    # 'recruiter.apps.RecruiterConfig',
+    'candidate.apps.CandidateConfig',
+    'recruiter.apps.RecruiterConfig',
     'register.apps.RegisterConfig',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -35,10 +35,6 @@ class CustomUserCreationForm(forms.Form):
         r = User.objects.filter(username=username)
         if r.count():
             raise  ValidationError("Username already exists")
-        # no spaces
-        if ' ' in username or '\t' in username:
-            raise ValidationError("Username cannot contain spaces.")
-        
         return username
 
     def clean_password2(self):
@@ -64,3 +60,4 @@ class CustomUserCreationForm(forms.Form):
             user.groups.add(recruiter_group)
             
         return user
+    
