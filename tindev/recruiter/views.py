@@ -58,9 +58,12 @@ def profile_creation_view(request):
                         'zip_code_err': zip_code_err}
             return render(request, 'recruiter/profile_creation.html', context)
     else:
-        # GET request
-        form = RecruiterProfileCreationForm(prefix='profile_creation')
-        return render(request, 'recruiter/profile_creation.html', {'form':form})
-
-    # MAYBE FIX ME
-    #return render(request, 'recruiter/profile_creation.html', context = {})
+        # GET, check if profile exists
+        try:
+            recruiter = RecruiterProfile.objects.get(user = request.user)
+            # recruiter profile exists already, redirect to homepage.
+            return HttpResponseRedirect('/recruiter/homepage/')
+        except RecruiterProfile.DoesNotExist:
+            # recruiter profile does not exist, load profile creation.
+            form = RecruiterProfileCreationForm(prefix='profile_creation')
+            return render(request, 'recruiter/profile_creation.html', {'form':form})

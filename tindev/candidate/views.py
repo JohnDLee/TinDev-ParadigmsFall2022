@@ -59,7 +59,12 @@ def profile_creation_view(request):
                        }
             return render(request, "candidate/profile_creation.html", context)
     else:
-        # GET, just returns the page with unbound form.
-        form = CustomCandidateCreationForm(prefix='profile_creation')
-        return render(request, "candidate/profile_creation.html", {"form": form})
-    # return render(request, 'candidate/profile_creation.html', context={})
+        # GET, check if profile exists.
+        try:
+            candidate = CandidateProfile.objects.get(user = request.user)
+            # candidate profile exists already, redirect to homepage.
+            return HttpResponseRedirect('/candidate/homepage/')
+        except CandidateProfile.DoesNotExist:
+            # candidate profile does not exist, load profile creation.
+            form = CustomCandidateCreationForm(prefix='profile_creation')
+            return render(request, 'candidate/profile_creation.html', {'form':form})
