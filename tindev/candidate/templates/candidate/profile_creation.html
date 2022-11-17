@@ -3,5 +3,48 @@
 {% block title %}Candidate Profile Creation{% endblock %}
 
 {% block content %}
-<h1> CREATE A CANDIDATE PROFILE HERE </h1>
+<div class="div-center-small">
+    <div class="content">
+        <h3>Candidate Profile Creation</h3>
+        <hr />
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name-candidate">Name</label>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label for="id_zip_code-candidate">Zip Code</label>
+                {{ form.zip_code }}
+                {% if zip_code_err %}
+                <div style="color: red;">
+                    {{ zip_code_err }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_bio-candidate">Bio</label>
+                {{ form.bio }}
+            </div>
+            <div class="form-group">
+                <label for="id_skills-candidate">Skills</label>
+                {{ form.skills }}
+            </div>
+            <div class="form-group">
+                <label for="id_github-candidate">Github</label>
+                {{ form.github }}
+            </div>
+            <div class="form-group">
+                <label for="id_experience-candidate">Experience</label>
+                {{ form.experience }}
+            </div>
+            <div class="form-group">
+                <label for="id_education-candidate">Education</label>
+                {{ form.education }}
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+    </div>
+    </span>
+</div>
 {% endblock %}
