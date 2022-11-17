@@ -19,7 +19,7 @@ def signup_view(request):
         if form.is_valid():
             form.save()
             #save and redirect to login
-            return HttpResponseRedirect(reverse_lazy("login"))
+            return HttpResponseRedirect("/register/login/")
         else:
             #if "username" in form.errors:
             username_err = None
