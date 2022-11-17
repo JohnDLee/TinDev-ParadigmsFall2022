@@ -38,8 +38,17 @@ def homepage_view(request):
 @user_passes_test(recruiter_check, login_url = login_url)
 def profile_creation_view(request):
     ''' profile creation view'''
+    # check if a recruiter profile exists already
+    try:
+        recruiter = RecruiterProfile.objects.get(user = request.user)
+        # recruiter profile exists already, redirect to homepage.
+        return HttpResponseRedirect('/recruiter/homepage/')
+    except RecruiterProfile.DoesNotExist:
+        pass
+    
     if request.method == 'POST':
         # create bound form
+        print(request.POST)
         form = RecruiterProfileCreationForm(request.POST, prefix='profile_creation')
         # if form valid
         if form.is_valid():
@@ -52,18 +61,13 @@ def profile_creation_view(request):
             zip_code_err = None
             if form.has_error('zip_code'):
                 zip_code_err = form.errors['zip_code']
+            print(form.errors)
 
             # get errors
             context = {'form': RecruiterProfileCreationForm(prefix='profile_creation'),
                         'zip_code_err': zip_code_err}
             return render(request, 'recruiter/profile_creation.html', context)
     else:
-        # GET, check if profile exists
-        try:
-            recruiter = RecruiterProfile.objects.get(user = request.user)
-            # recruiter profile exists already, redirect to homepage.
-            return HttpResponseRedirect('/recruiter/homepage/')
-        except RecruiterProfile.DoesNotExist:
-            # recruiter profile does not exist, load profile creation.
-            form = RecruiterProfileCreationForm(prefix='profile_creation')
-            return render(request, 'recruiter/profile_creation.html', {'form':form})
+        # recruiter profile does not exist, load profile creation.
+        form = RecruiterProfileCreationForm(prefix='profile_creation')
+        return render(request, 'recruiter/profile_creation.html', {'form':form})

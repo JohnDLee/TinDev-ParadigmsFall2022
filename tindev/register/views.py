@@ -48,7 +48,7 @@ def login_view(request):
     ''' Allows a user to login'''
     if request.method == 'POST':
         # POST
-        username = request.POST['login-username']
+        username = request.POST['login-username'].lower()
         password = request.POST['login-password']
         user = authenticate(request, username=username, password=password)
         

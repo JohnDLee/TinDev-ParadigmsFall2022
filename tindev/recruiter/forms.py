@@ -1,8 +1,6 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator, MaxLengthValidator
-from django.contrib.auth.validators import ASCIIUsernameValidator
+from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
 from django.forms import widgets
 from .models import RecruiterProfile
 
@@ -18,18 +16,25 @@ class RecruiterProfileCreationForm(forms.Form):
                                                                "placeholder":"Name"
                                                                }))
 
-    zip_code = forms.CharField(widget=widgets.TextInput(attrs={"class": "form-control",
+    zip_code = forms.IntegerField(widget=widgets.NumberInput(attrs={"class": "form-control",
                                                                   "type":"zip_code", 
                                                                   "placeholder":"Zip Code"
                                                                   }),
-                                validators = [MinLengthValidator(5, 'Zip Code must be 5 digits.'),
-                                                MaxLengthValidator(5, 'Zip Code must be 5 digits.')])
+                                )
 
     company = forms.CharField(min_length=1,
                                 max_length=200,
                                 widget=widgets.TextInput(attrs={"class": "form-control",
                                                                 "type":"company",
                                                                 "placeholder": "Company"}))
+    
+    def clean_zip_code(self):
+        ''' check that zipcode has 5 digits'''
+        zip_code = self.cleaned_data['zip_code']
+        if len(str(zip_code)) != 5:
+            raise ValidationError("Zip code must contain exactly 5 digits.")
+        return zip_code
+        
     
     def save(self, req, commit=True):
         ''' save to recruiter profile '''

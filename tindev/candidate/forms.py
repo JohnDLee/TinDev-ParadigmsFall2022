@@ -17,24 +17,25 @@ class CustomCandidateCreationForm(forms.Form):
                            widget=widgets.TextInput(attrs={"class": "form-control",
                                                            "type": "name",
                                                            "placeholder": "Name"}))
-    zip_code = forms.CharField(widget=widgets.TextInput(attrs={"class": "form-control",
+    zip_code = forms.IntegerField(widget=widgets.NumberInput(attrs={"class": "form-control",
                                                                "type": "zip_code",
-                                                               "placeholder": "Zip Code"}),
-                               validators=[MinLengthValidator(5, 'Zip Code must be 5 digits.'),
-                                           MaxLengthValidator(5, 'Zip Code must be 5 digits.')])
-    bio = forms.CharField(max_length=500, widget=widgets.TextInput(attrs={"class": "form-control",
+                                                               "placeholder": "Zip Code"}))
+                              
+    bio = forms.CharField(widget=widgets.Textarea(attrs={"class": "form-control",
                                                                           "type": "bio",
-                                                                          "placeholder": "Profile Bio"}))
-    skills = forms.CharField(widget=widgets.TextInput(attrs={"class": "form-control",
+                                                                          "placeholder": "Profile Bio",
+                                                                          "rows" : "3"}))
+    skills = forms.CharField(widget=widgets.Textarea(attrs={"class": "form-control",
                                                              "type": "skills",
-                                                             "placeholder": "Skills"
+                                                             "placeholder": "Skills",
+                                                             "rows" : "3"
                                                              }))
     github = forms.CharField(max_length=200,
                              widget=widgets.TextInput(attrs={"class": "form-control",
                                                              "type": "github",
                                                              "placeholder": "Github"
                                                              }))
-    experience = forms.IntegerField(widget=widgets.TextInput(attrs={"class": "form-control",
+    experience = forms.IntegerField(widget=widgets.NumberInput(attrs={"class": "form-control",
                                                                     "type": "experience",
                                                                     "placeholder": "Years of experience"
                                                                     }))
@@ -42,6 +43,13 @@ class CustomCandidateCreationForm(forms.Form):
                                                                 "type": "education",
                                                                 "placeholder": "Education"
                                                                 }))
+    
+    def clean_zip_code(self):
+        ''' check that zipcode has 5 digits'''
+        zip_code = self.cleaned_data['zip_code']
+        if len(str(zip_code)) != 5:
+            raise ValidationError("Zip code must contain exactly 5 digits.")
+        return zip_code
 
     def save(self, req, commit=True):
         # save a candidate to a profile

@@ -3,7 +3,7 @@
 {% block title %}Candidate Profile Creation{% endblock %}
 
 {% block content %}
-<div class="div-center-small">
+<div class="div-center-large">
     <div class="content">
         <h3>Candidate Profile Creation</h3>
         <hr />
@@ -16,9 +16,9 @@
             <div class="form-group">
                 <label for="id_zip_code-candidate">Zip Code</label>
                 {{ form.zip_code }}
-                {% if zip_code_err %}
+                {% if zip_code_error %}
                 <div style="color: red;">
-                    {{ zip_code_err }}
+                    {{ zip_code_error }}
                 </div>
                 {% endif %}
             </div>
@@ -37,6 +37,11 @@
             <div class="form-group">
                 <label for="id_experience-candidate">Experience</label>
                 {{ form.experience }}
+                {% if exper_error %}
+                <div style="color: red;">
+                    {{ exper_error }}
+                </div>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="id_education-candidate">Education</label>
