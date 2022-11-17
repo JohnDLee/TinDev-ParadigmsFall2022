@@ -3,5 +3,33 @@
 {% block title %}Recruiter Profile Creation{% endblock %}
 
 {% block content %}
-<h1> CREATE A RECRUITER PROFILE HERE </h1>
+<div class="div-center-large">
+    <div class="content">
+        <h3>Setup Recruiter Profile</h3>
+        <hr />
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name-recruiter">Name</label>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label for="id_zip_code-recruiter">Zip Code</label>
+                {{ form.zip_code }}
+                {% if zip_code_err %}
+                <div style="color: red;">
+                    {{ zip_code_err }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_company-recruiter">Company</label>
+                {{ form.company }}
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</span>
+</div>
+
 {% endblock %}
