@@ -48,11 +48,9 @@ def profile_creation_view(request):
     
     # fill this
     if request.method == 'POST':
-        print("test")
         # create the bound form
         form = CustomCandidateCreationForm(
             request.POST, prefix='profile_creation')
-        print(form.errors)
         # if a valid form, send to their dashboard
         if form.is_valid():
             candidate = form.save(req=request)
