@@ -12,22 +12,21 @@ by John Lee, Mark Rumsey, and Chris Capone
 
 ### Mark's Tasks
 Create Recruiter Profile
-- For now, just create the Form/page where you can create the Recruiter model.
-- Inside register I have a Recruiter Profile. It's wrong, but the attribute fields are correct. Move them into the recruiter app 
-- Make sure you use bootstrap. I have example in the code I've already written on how to set things up
-- Make sure you associate the profile with a specific user id
+- I have created under recruiter/templates/recruiter a profile_creation.html -> use that for the view of the profile creation page.
+- Use a form to fill the model (see my forms.py in register)
+- in recruiter/views.py fill out the profile_creation_view function properly. See my signup_view in register for examples.
+- You just need to construct an interface to fill out the form and construct the model associated with the user. Then redirect to the /recruiter/homepage/
+- Also, add a logout option in the form creation step too. -> when the button is clicked, just call logout(request) and HttpsRedirect to login page.
 
 ### Chris's Tasks
 Create Candidate Profile
-- Same thing as Mark, just create the Form/page, and view where you can initialize a Candidate profile. 
-- Move the stuff from register into the candidate app
-- Make sure you associate the profile with a specific user id.
+- Literally the same things as Mark but for candidate profile. Same template is provided.
 
 ### Accessing Website
 Use 
-- John Lee: `http://129.74.152.125:51062`
-- Mark Rumsey: `http://129.74.152.125:51090`
-- Chris Capone: `http://129.74.152.125:51019`
+- John Lee: `http://129.74.152.125:51062/register/login`
+- Mark Rumsey: `http://129.74.152.125:51090/register/login`
+- Chris Capone: `http://129.74.152.125:51019/register/login`
 
 Super User
 - Username: paradigms
