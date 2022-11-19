@@ -2,7 +2,6 @@
     width: 500px;
     height: 500px;
     background-color: #fff;
-    position: absolute;
     left: 0;
     right: 0;
     top: 0;
@@ -19,7 +18,22 @@
     width: 800px;
     height: 800px;
     background-color: #fff;
-    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    padding: 1em 2em;
+    display: table;
+  }
+
+.div-center-xlarge {
+    width: 1200px;
+    height: 1200px;
+    background-color: #fff;
     left: 0;
     right: 0;
     top: 0;
@@ -34,4 +48,30 @@
 
 .signup-error {
   color: red;
+}
+
+.column-left {
+  float: left;
+  width: 25%;
+  padding: 10px;
+}
+.column-middle {
+  float: left;
+  width: 28%;
+  padding: 10px;
+}
+.column-middle2 {
+  float: left;
+  width: 28%;
+  padding: 10px;
+}
+.column-right {
+  float: left;
+  width: 19%;
+  padding: 10px;
+}
+
+.right-align {
+  float:right;
+  height: 30px;
 }

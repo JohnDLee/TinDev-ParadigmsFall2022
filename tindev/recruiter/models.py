@@ -10,3 +10,19 @@ class RecruiterProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.username}"
+    
+class JobPost(models.Model):
+    
+    recruiter = models.ForeignKey(RecruiterProfile, on_delete=models.CASCADE)
+    pos_title = models.CharField("Position Title", max_length = 200)
+    type = models.CharField("Type", max_length=200)
+    location = models.CharField("Location", max_length = 200)
+    des_skills = models.TextField("Desired Skills")
+    description = models.TextField("Description")
+    company = models.CharField("Company", max_length = 200)
+    exp_date = models.DateField("Expiration Date")
+    status = models.CharField("Status", max_length = 200)
+    interested_candidates = models.PositiveIntegerField("Interested Candidates", default = 0)
+    
+    def __str__(self):
+        return f"{self.pos_title} ({self.type}) - {self.company}"

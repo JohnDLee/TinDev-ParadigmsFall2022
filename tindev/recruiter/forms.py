@@ -4,7 +4,6 @@ from django.core.validators import MinLengthValidator, MaxLengthValidator, Regex
 from django.forms import widgets
 from .models import RecruiterProfile
 
-
 class RecruiterProfileCreationForm(forms.Form):
     ''' Form for creating recruiter profile.'''
     

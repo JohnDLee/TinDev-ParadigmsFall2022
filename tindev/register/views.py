@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import CustomUserCreationForm
 # Create your views here.
 
 # Log In View
-
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect("/register/login/")
 
 # Register View
 def signup_view(request):
