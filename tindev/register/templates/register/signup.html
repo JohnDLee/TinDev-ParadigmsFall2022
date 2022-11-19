@@ -10,7 +10,7 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="id_username-candidate">Username</label>
+                <label for="id_signup-username">Username</label>
                 {{ form.username }}
                 {% if username_err %}
                 <div style="color: red;">
@@ -19,7 +19,7 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                <label for="id_password1-candidate">Password</label>
+                <label for="id_signup-password1">Password</label>
                 {{ form.password1 }}
                 {% if password1_err %}
                 <div style="color: red;">
@@ -28,7 +28,7 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                <label for="id_password2-candidate">Re-enter Password</label>
+                <label for="id_signup-password2">Re-enter Password</label>
                 {{ form.password2 }}
                 {% if password2_err %}
                 <div style="color: red;">
@@ -37,7 +37,7 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                <label for="id_profile_type-candidate">Profile Type</label>
+                <label for="id_signup-profile_type">Profile Type</label>
                 <div class = "form-check form-check-inline">
                     {% for radio in form.profile_type %}
                         {{ radio.tag }}

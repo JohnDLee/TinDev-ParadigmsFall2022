@@ -10,11 +10,11 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="id_name-recruiter">Name</label>
+                <label for="id_recruiter-name">Name</label>
                 {{ form.name }}
             </div>
             <div class="form-group">
-                <label for="id_zip_code-recruiter">Zip Code</label>
+                <label for="id_recruiter-zip_code">Zip Code</label>
                 {{ form.zip_code }}
                 {% if zip_code_err %}
                 <div style="color: red;">
@@ -23,7 +23,7 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                <label for="id_company-recruiter">Company</label>
+                <label for="id_recruiter-company">Company</label>
                 {{ form.company }}
             </div>
             <button type="submit" class="btn btn-primary">Create</button>

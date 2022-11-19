@@ -6,21 +6,13 @@ by John Lee, Mark Rumsey, and Chris Capone
 - Click Sign up to register for an account.
 - You will be brought back to Login if successful.
 
-### John's Tasks
-- Displaying error messages on signup.
-- Login/Connecting Recruiter Profile and Candidate Profile after it's created.
-
-### Mark's Tasks
-Create Recruiter Profile
-- I have created under recruiter/templates/recruiter a profile_creation.html -> use that for the view of the profile creation page.
-- Use a form to fill the model (see my forms.py in register)
-- in recruiter/views.py fill out the profile_creation_view function properly. See my signup_view in register for examples.
-- You just need to construct an interface to fill out the form and construct the model associated with the user. Then redirect to the /recruiter/homepage/
-- Also, add a logout option in the form creation step too. -> when the button is clicked, just call logout(request) and HttpsRedirect to login page.
-
-### Chris's Tasks
-Create Candidate Profile
-- Literally the same things as Mark but for candidate profile. Same template is provided.
+### Mark & Chris Tasks
+- [] Finish Designing the Post page. I've finished all the functionality with update and delete.
+- [] 1.4 (For candidate, Just see how I logout (just a redirect))
+- [] 2.5 After implementing Post page, include the interested candidates and ability to make an offer
+- [] 2.6 Implement candidate algorithm.
+- [] 3.1 Create an equivalent Candidate Homepage. This should not be too bad, considering you can roughly copy my Recruiter Homepage. For changing the view, look at how I filtered it on the Recruiter Homepage
+- [] 3.2-3.4 You figure it out. Should be the easy part.
 
 ### Accessing Website
 Use 

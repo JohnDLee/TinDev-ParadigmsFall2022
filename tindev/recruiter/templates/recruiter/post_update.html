@@ -1,11 +1,11 @@
 {% extends "recruiter_base.html" %}
 
-{% block title %}Job Post Creation{% endblock %}
+{% block title %}Job Post Update{% endblock %}
 
 {% block content %}
 <div class="div-center-large">
     <div class="content">
-        <h3>Job Post Creation</h3>
+        <h3>Update Post</h3>
         <hr />
         <form method="post">
             {% csrf_token %}
@@ -47,7 +47,8 @@
                     <label class="form-check-label" for ="{{ radio.id_for_label }}"> {{ radio.choice_label }} </label>
                 {% endfor %}
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a type="button" href="/recruiter/post/{{ pk }}" class="btn btn-primary">Back</a>
         </form>
     </div>
 </span>
