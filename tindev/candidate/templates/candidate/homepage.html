@@ -3,5 +3,76 @@
 {% block title %}Candidate Homepage{% endblock %}
 
 {% block content %}
-<h1> Success accessing Candidate Homepage for {{candidate.name}} </h1>
+<div class="div-center-xlarge">
+    <h1><b>{{candidate.name}}'s Dashboard</b></h1>
+    <h2>Job Postings</h2>
+    <div style="padding:10px">     
+            <a class="btn btn-primary" href="/register/logout" role="button">Logout</a>
+            <form class = "right-align" method="get">
+                <span style="padding:10px">
+                    <input type="radio" name="interestFilter" value="All" class="form-check-input" id="view-method_0" required="">
+                    <label class="form-check-label" for="view-method_0"> All </label>
+                    <input type="radio" name="interestFilter" value="Interested" class="form-check-input" id="view-method_3" required="">
+                    <label class="form-check-label" for="view-method_3"> Has Interest </label>
+                </span>
+                <span style="padding:10px">
+                    <label for="Status">Status</label>
+                    <select name="statusFilter" id="status">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+                    <label for="Location">Location</label>
+                    <input type="search" id="location" name="locationFilter">
+                    <label for="Keywords">Keywords</label>
+                    <input type="search" id="keywords" name="keywordFilter">
+                </span>
+                <span style="padding:10px">
+                    <button class="right-align" type="submit">Filter</button>
+                </span>
+                
+            </form>
+    </div>
+    
+    <div class = "list-group">
+        {% for post in job_posts %} 
+        <div>
+            <a href="/recruiter/post/{{ post.id }}/" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="container text-left">
+                <div class = "row">
+                    <div class = "column-left">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h4 class="mb-1">{{ post.pos_title }} - {{ post.company }}</h4>
+                            <p class="mb-1">Located: {{ post.location }}</p>
+                            <p class="mb-1">{{ post.type }}</p>
+                        </div>
+                    </div>
+                    <div class = "column-middle">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Description:</h5>
+                            <p class="mb-1">{{post.description}}</p>
+
+                        </div>
+                    </div>
+                    <div class = "column-middle2">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Skills:</h5>
+                            <p class="mb-1">{{post.des_skills}}</p>
+                        </div>
+                    </div>
+                    <div class = "column-right">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Expires {{post.exp_date}}</h5>
+                            <h5>{{post.status}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </a>
+                
+            
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
 {% endblock %}

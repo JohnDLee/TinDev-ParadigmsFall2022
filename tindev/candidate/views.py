@@ -4,6 +4,8 @@ from .models import CandidateProfile
 from django.http import HttpResponseRedirect
 from .forms import CustomCandidateCreationForm
 from django.urls import reverse_lazy
+from recruiter.models import JobPost
+from django.db.models.functions import Lower
 # Create your views here.
 
 
@@ -27,7 +29,42 @@ def homepage_view(request):
         try:
             candidate = CandidateProfile.objects.get(user=request.user)
             # candidate profile exists already, load page.
-            context = {'candidate': candidate}
+
+            queryset = JobPost.objects
+
+            # FILTER STUFF GOES HERE, ALSO ADD TO CONTEXT
+            if request.method == 'GET':
+                interestFilter = request.GET.get("interestFilter", "")
+                statusFilter = request.GET.get("statusFilter", "")
+                locationFilter = request.GET.get("locationFilter", "")
+                keywordFilter = request.GET.get("keywordFilter", "")
+
+                if interestFilter == "Interested":
+                    # FIX ME
+                    # Should be whether the user is interested, not if there are any interested users for the post
+                    queryset = queryset.filter(interested_candidates__gte=1)
+
+                if statusFilter == "Active":
+                    queryset = queryset.filter(status=statusFilter)
+                elif statusFilter == "Inactive":
+                    queryset = queryset.filter(status=statusFilter)
+
+                # FIX ME
+                # Should not require exact match, copy format from keyword
+                if locationFilter != "":
+                    queryset = queryset.filter(
+                        location__icontains=locationFilter)
+
+                if keywordFilter != "":
+                    queryset = queryset.filter(
+                        description__icontains=keywordFilter)
+
+            queryset = queryset.order_by(Lower('pos_title'))
+
+            print(queryset)
+            context = {'candidate': candidate,
+                       'job_posts': queryset}
+
             return render(request, 'candidate/homepage.html', context=context)
         except CandidateProfile.DoesNotExist:
             # candidate profile does not exist, redirect to profile creation.
@@ -40,12 +77,12 @@ def profile_creation_view(request):
     ''' profile creation view'''
     # check that user doesn't already have an associated model
     try:
-        candidate = CandidateProfile.objects.get(user = request.user)
+        candidate = CandidateProfile.objects.get(user=request.user)
         # candidate profile exists already, redirect to homepage.
         return HttpResponseRedirect('/candidate/homepage/')
     except CandidateProfile.DoesNotExist:
         pass
-    
+
     # fill this
     if request.method == 'POST':
         # create the bound form
@@ -72,4 +109,4 @@ def profile_creation_view(request):
     else:
         # candidate profile does not exist, load profile creation.
         form = CustomCandidateCreationForm(prefix='profile_creation')
-        return render(request, 'candidate/profile_creation.html', {'form':form})
+        return render(request, 'candidate/profile_creation.html', {'form': form})
