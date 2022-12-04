@@ -22,6 +22,7 @@ class CandidateProfile(models.Model):
     github = models.CharField('Github Username', max_length=200)
     experience = models.IntegerField('Years Of Experience')
     education = models.TextField('Education')
+    uninterested_ids = models.TextField('Uninterested IDs', default='')
 
     def __str__(self):
         return f"{self.user.username}"

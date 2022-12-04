@@ -23,6 +23,7 @@ class JobPost(models.Model):
     exp_date = models.DateField("Expiration Date")
     status = models.CharField("Status", max_length = 200)
     interested_candidates = models.PositiveIntegerField("Interested Candidates", default = 0)
+    interested_ids = models.TextField("Interested IDs", default="")
     
     def __str__(self):
         return f"{self.pos_title} ({self.type}) - {self.company}"
