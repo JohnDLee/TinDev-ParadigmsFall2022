@@ -11,7 +11,19 @@
             <a role = "button" class="btn btn-primary" href="/recruiter/post_update/{{ post.id }}/">Update Post</a>
             <a role = "button" class="btn btn-primary" href="/recruiter/homepage/">Back</a>
         </div>
-        {{ post.pos_title }}
+        <h2>{{ post.pos_title }} - {{ post.company }}</h2>
+        <h4><b>Located: {{ post.location }}</b></h4>
+        <b>{{ post.type }}</b>
+        <h3>Skills:</h3>
+        <h4><b>{{ post.des_skills }}</b></h4>
+        <h3>Description:</h3>
+        <h4><b>{{ post.description }}</b></h4>
+        <h4>Expires <b>{{ post.exp_date }}</b></h4>
+        <b>{{ post.status }}</b>
+        <br>
+        <br>
+        <h3>Interested Candidates:</h3>
+        <h1><b>FIXME</b></h1>
     </div>
 </div>
 {% endblock %}
