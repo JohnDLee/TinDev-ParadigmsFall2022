@@ -42,15 +42,14 @@ def homepage_view(request):
                 if interestFilter == "Interested":
                     # FIX ME
                     # Should be whether the user is interested, not if there are any interested users for the post
-                    queryset = queryset.filter(interested_candidates__gte=1)
+                    queryset = queryset.filter(
+                        interested_ids__icontains=f",{candidate.id},")
 
                 if statusFilter == "Active":
                     queryset = queryset.filter(status=statusFilter)
                 elif statusFilter == "Inactive":
                     queryset = queryset.filter(status=statusFilter)
 
-                # FIX ME
-                # Should not require exact match, copy format from keyword
                 if locationFilter != "":
                     queryset = queryset.filter(
                         location__icontains=locationFilter)
@@ -111,9 +110,10 @@ def profile_creation_view(request):
         form = CustomCandidateCreationForm(prefix='profile_creation')
         return render(request, 'candidate/profile_creation.html', {'form': form})
 
+
 @login_required(login_url=login_url)
 @user_passes_test(candidate_check, login_url=login_url)
-def post_view(request, pk = None):
+def post_view(request, pk=None):
     ''' Post View '''
 
     # check if candidate profile exists
@@ -123,17 +123,18 @@ def post_view(request, pk = None):
         return HttpResponseRedirect('/candidate/profile_creation')
 
     # get post by id
-    post = JobPost.objects.get(pk = pk)
+    post = JobPost.objects.get(pk=pk)
 
     # check if post exists
     if not post:
         return HttpResponseRedirect('/candidate/homepage')
 
-    return render(request, 'candidate/post.html', context = {'post': post})
+    return render(request, 'candidate/post.html', context={'post': post})
+
 
 @login_required(login_url=login_url)
 @user_passes_test(candidate_check, login_url=login_url)
-def interested_view(request, pk = None):
+def interested_view(request, pk=None):
     ''' Interested View '''
 
     # check if candidate profile exists
@@ -143,7 +144,7 @@ def interested_view(request, pk = None):
         return HttpResponseRedirect('/candidate/profile_creation')
 
     # get post by id
-    post = JobPost.objects.get(pk = pk)
+    post = JobPost.objects.get(pk=pk)
 
     # add candidate id to post interested list
     if post and str(candidate.id) not in post.interested_ids.split(','):
@@ -151,14 +152,17 @@ def interested_view(request, pk = None):
         post.save()
         # remove post from candidate uninterested list
         if str(post.id) in candidate.uninterested_ids.split(','):
-            candidate.uninterested_ids = ','+','.join(candidate.uninterested_ids.split(',').remove(str(post.id)))+','
+            candidate.uninterested_ids = ',' + \
+                ','.join(candidate.uninterested_ids.split(
+                    ',').remove(str(post.id)))+','
             candidate.save()
 
     return HttpResponseRedirect('/candidate/homepage')
 
+
 @login_required(login_url=login_url)
 @user_passes_test(candidate_check, login_url=login_url)
-def uninterested_view(request, pk = None):
+def uninterested_view(request, pk=None):
     # check if candidate profile exists
     try:
         candidate = CandidateProfile.objects.get(user=request.user)
@@ -166,7 +170,7 @@ def uninterested_view(request, pk = None):
         return HttpResponseRedirect('/candidate/profile_creation')
 
     # get post by id
-    post = JobPost.objects.get(pk = pk)
+    post = JobPost.objects.get(pk=pk)
 
     # add post id to candidate uninterested list
     if post:
@@ -175,6 +179,8 @@ def uninterested_view(request, pk = None):
             candidate.save()
             # remove candidate from post interested list
             if str(candidate.id) in post.interested_ids.split(','):
-                post.interested_ids = ','+','.join(post.interested_ids.split(',').remove(str(candidate.id)))+','
+                post.interested_ids = ',' + \
+                    ','.join(post.interested_ids.split(
+                        ',').remove(str(candidate.id)))+','
 
     return HttpResponseRedirect('/candidate/homepage')
