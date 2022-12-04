@@ -151,7 +151,7 @@ def interested_view(request, pk = None):
         post.save()
         # remove post from candidate uninterested list
         if str(post.id) in candidate.uninterested_ids.split(','):
-            candidate.uninterested_ids = ','.join(candidate.uninterested_ids.split(',').remove(str(post.id)))
+            candidate.uninterested_ids = ','+','.join(candidate.uninterested_ids.split(',').remove(str(post.id)))+','
             candidate.save()
 
     return HttpResponseRedirect('/candidate/homepage')
@@ -175,6 +175,6 @@ def uninterested_view(request, pk = None):
             candidate.save()
             # remove candidate from post interested list
             if str(candidate.id) in post.interested_ids.split(','):
-                post.interested_ids = ','.join(post.interested_ids.split(',').remove(str(candidate.id)))
+                post.interested_ids = ','+','.join(post.interested_ids.split(',').remove(str(candidate.id)))+','
 
     return HttpResponseRedirect('/candidate/homepage')
