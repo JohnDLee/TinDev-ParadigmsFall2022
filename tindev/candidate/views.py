@@ -147,14 +147,17 @@ def interested_view(request, pk=None):
     post = JobPost.objects.get(pk=pk)
 
     # add candidate id to post interested list
-    if post and str(candidate.id) not in post.interested_ids.split(','):
-        post.interested_ids += f',{candidate.id},'
-        post.save()
+    if post:
+        if str(candidate.id) not in post.interested_ids.split(','):
+            post.interested_ids += f',{candidate.id},'
+            post.interested_candidates += 1
+            post.save()
         # remove post from candidate uninterested list
         if str(post.id) in candidate.uninterested_ids.split(','):
+            uninterested_ids = candidate.uninterested_ids.split(',')
+            uninterested_ids.remove(str(post.id))
             candidate.uninterested_ids = ',' + \
-                ','.join(candidate.uninterested_ids.split(
-                    ',').remove(str(post.id)))+','
+                ','.join(uninterested_ids)+','
             candidate.save()
 
     return HttpResponseRedirect('/candidate/homepage')
@@ -177,10 +180,13 @@ def uninterested_view(request, pk=None):
         if str(post.id) not in candidate.uninterested_ids.split(','):
             candidate.uninterested_ids += f',{post.id},'
             candidate.save()
-            # remove candidate from post interested list
-            if str(candidate.id) in post.interested_ids.split(','):
-                post.interested_ids = ',' + \
-                    ','.join(post.interested_ids.split(
-                        ',').remove(str(candidate.id)))+','
+        # remove candidate from post interested list
+        if str(candidate.id) in post.interested_ids.split(','):
+            interested_ids = post.interested_ids.split(',')
+            interested_ids.remove(str(candidate.id))
+            post.interested_ids = ',' + \
+                ','.join(interested_ids)+','
+            post.interested_candidates -= 1
+            post.save()
 
     return HttpResponseRedirect('/candidate/homepage')
