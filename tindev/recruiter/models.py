@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from candidate.models import CandidateProfile
 # Create your models here.
 
 
@@ -34,3 +35,16 @@ class JobPost(models.Model):
 
     def listify(self):
         return list(map(int, [x for x in self.interested_ids.split(",") if x]))
+
+class Offer(models.Model):
+    job_post = models.ForeignKey(JobPost, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE)
+    yearly_salary = models.PositiveIntegerField("Yearly Salary", default=0)
+    due_date = models.DateField("Due Date")
+    accepted = models.IntegerField("Accepted", default=0)
+
+    def accept(self):
+        self.accepted = 1
+
+    def decline(self):
+        self.accepted = -1

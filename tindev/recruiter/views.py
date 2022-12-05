@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import RecruiterProfile, JobPost
+from .models import RecruiterProfile, JobPost, Offer
 from django.views.generic import DetailView, UpdateView
 from django.http import HttpResponseRedirect
-from .forms import RecruiterProfileCreationForm, JobPostCreationForm
+from .forms import RecruiterProfileCreationForm, JobPostCreationForm, OfferForm
 from django.db.models.functions import Lower
 from django import forms
 from django.urls import reverse_lazy
@@ -208,3 +208,40 @@ def post_update_view(request, pk=None):
         form = JobPostCreationForm(initial=init, prefix="update_post")
         print(form.initial)
         return render(request, "recruiter/post_update.html", context={'form': form, "pk": pk})
+
+
+@login_required(login_url=login_url)
+@user_passes_test(recruiter_check, login_url=login_url)
+def post_offer_view(request, pk=None, ck=None):
+    # check if a recruiter profile exists already
+    try:
+        recruiter = RecruiterProfile.objects.get(user=request.user)
+    except RecruiterProfile.DoesNotExist:
+        # no recruiter exists
+        return HttpResponseRedirect("/recruiter/profile_creation/")
+
+    if request.method == 'POST':
+        # create form
+        form = OfferForm(request.POST, prefix='post_offer')
+
+        # check post is yours and candidate is interested
+        post = JobPost.objects.filter(recruiter=recruiter).get(pk=pk)
+        candidate = CandidateProfile.objects.get(pk=ck)
+        if not post or not candidate:
+            return HttpResponseRedirect("/recruiter/homepage/")
+        if ck not in list(map(int, [x for x in post.interested_ids.split(',') if x])):
+            return HttpResponseRedirect("/recruiter/homepage/")
+
+        # save offer
+        if form.is_valid():
+            # save and redirect to recruiter page
+            form.save(job_post=post, candidate=candidate)
+            return HttpResponseRedirect(f'/recruiter/homepage/')
+        else:
+            context = {'form': OfferForm(prefix='job_post'), 'pk': pk, 'ck': ck, 'candidate': candidate}
+            return render(request, 'recruiter/post_offer.html', context)
+
+    else:
+        form = OfferForm(prefix='post_offer')
+        candidate = CandidateProfile.objects.get(pk=ck)
+        return render(request, 'recruiter/post_offer.html', context={'form': form, 'pk': pk, 'ck': ck, 'candidate': candidate})

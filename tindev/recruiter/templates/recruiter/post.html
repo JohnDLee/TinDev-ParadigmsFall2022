@@ -27,7 +27,7 @@
             {% for candidate in candidates %}
                 {% if candidate.id == item %}
                     <div>
-                        <a href="/recruiter/homepage/" class="list-group-item list-group-item-action" aria-current="true">
+                        <a href="/recruiter/post_offer/{{ post.id }}/{{ candidate.id }}/" class="list-group-item list-group-item-action" aria-current="true">
                         <div class="container text-left">
                             <div class = "row">
                                 <div class = "column-left">

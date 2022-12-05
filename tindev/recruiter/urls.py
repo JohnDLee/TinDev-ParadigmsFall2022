@@ -10,4 +10,5 @@ urlpatterns = [
     path("post_creation/", views.post_creation_view, name = 'post_creation'),
     path("homepage/", views.homepage_view, name = 'homepage'),
     path("profile_creation/", views.profile_creation_view, name = 'profile_creation'),
+    path("post_offer/<int:pk>/<int:ck>/", views.post_offer_view, name = 'post_offer'),
 ]

@@ -1,0 +1,39 @@
+{% extends "recruiter_base.html" %}
+
+{% block title %}Post{% endblock %}
+
+{% block content %}
+<div class="div-center-large">
+    <div class="content">
+        <h3>Post</h3>
+        <div class = "alight-right">
+            <a role = "button" class="btn btn-primary" href="/recruiter/homepage/">Back</a>
+        </div>
+        <h2>{{ candidate.name }}</h2>
+        <h4><b>Zip Code: {{ candidate.zip_code }}</b></h4>
+        <h3>Bio:</h3>
+        <h4><b>{{ candidate.bio }}</b></h4>
+        <h3>Skills:</h3>
+        <h4><b>{{ candidate.skills }}</b></h4>
+        <h4>Experience: <b>{{ candidate.experience }} years</b></h4>
+        <h4>Education: <b>{{ candidate.education }}</b></h4>
+        <h4>Github: <b>{{ candidate.github }}</b></h4>
+        <b>{{ post.status }}</b>
+        <br>
+        <h3>Interested Candidates:</h3>
+        <hr />
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_yearly_salary">Yearly Salary</label>
+                {{ form.yearly_salary }}
+            </div>
+            <div class="form-group">
+                <label for="id_due_date">Due Date</label>
+                {{ form.due_date }}
+            </div>
+            <button type="submit" class="btn btn-primary">Send Offer</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

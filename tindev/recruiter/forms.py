@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
 from django.forms import widgets
-from .models import RecruiterProfile, JobPost
+from .models import RecruiterProfile, JobPost, Offer
 
 class RecruiterProfileCreationForm(forms.Form):
     ''' Form for creating recruiter profile.'''
@@ -109,4 +109,24 @@ class JobPostCreationForm(forms.Form):
                             exp_date = self.cleaned_data['exp_date'],
                             status = self.cleaned_data['status'],
                             interested_candidates = prev_candidates)
+
+
+class OfferForm(forms.Form):
+    ''' Form for making a job offer '''
+
+    yearly_salary = forms.IntegerField(widget=widgets.NumberInput(attrs={"class": "form-control",
+                                                                "type":"yearly_salary", 
+                                                                "placeholder":"Yearly Salary",
+                                                                }))
         
+    due_date = forms.DateField(widget=widgets.DateInput(attrs={"class": "form-control",
+                                                        "type":"date",
+                                                        }))
+
+    def save(self, job_post, candidate, commit=True):
+        offer = Offer(job_post = job_post,
+                        candidate = candidate,
+                        yearly_salary = self.cleaned_data['yearly_salary'],
+                        due_date = self.cleaned_data['due_date'])
+
+        offer.save()
