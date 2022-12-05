@@ -224,12 +224,19 @@ def post_offer_view(request, pk=None, ck=None):
         # create form
         form = OfferForm(request.POST, prefix='post_offer')
 
-        # check post is yours and candidate is interested
         post = JobPost.objects.filter(recruiter=recruiter).get(pk=pk)
         candidate = CandidateProfile.objects.get(pk=ck)
+
+        # check post is yours
         if not post or not candidate:
             return HttpResponseRedirect("/recruiter/homepage/")
+
+        # check that candidate is interested
         if ck not in list(map(int, [x for x in post.interested_ids.split(',') if x])):
+            return HttpResponseRedirect("/recruiter/homepage/")
+
+        # check if already offered
+        if Offer.objects.get(job_post=post, candidate=candidate):
             return HttpResponseRedirect("/recruiter/homepage/")
 
         # save offer
