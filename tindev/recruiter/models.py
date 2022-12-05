@@ -33,4 +33,4 @@ class JobPost(models.Model):
         return f"{self.pos_title} ({self.type}) - {self.company}"
 
     def listify(self):
-        return self.interested_ids.split(",")
+        return list(map(int, [x for x in self.interested_ids.split(",") if x]))
