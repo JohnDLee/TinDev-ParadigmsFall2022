@@ -21,9 +21,14 @@
         <h4>Expires <b>{{ post.exp_date }}</b></h4>
         <b>{{ post.status }}</b>
         <br>
-        <br>
         <h3>Interested Candidates:</h3>
-        <h1><b>FIXME</b></h1>
+        {% for item in post.listify %}
+            {% for candidate in candidates %}
+                {% if candidate.id == item %}
+                    {{ candidate.name }}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

@@ -32,7 +32,7 @@ def homepage_view(request):
 
             queryset = JobPost.objects
 
-            # FILTER STUFF GOES HERE, ALSO ADD TO CONTEXT
+            # perform filtering
             if request.method == 'GET':
                 interestFilter = request.GET.get("interestFilter", "")
                 statusFilter = request.GET.get("statusFilter", "")
@@ -40,8 +40,6 @@ def homepage_view(request):
                 keywordFilter = request.GET.get("keywordFilter", "")
 
                 if interestFilter == "Interested":
-                    # FIX ME
-                    # Should be whether the user is interested, not if there are any interested users for the post
                     queryset = queryset.filter(
                         interested_ids__icontains=f",{candidate.id},")
 
