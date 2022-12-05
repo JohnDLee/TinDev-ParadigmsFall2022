@@ -34,7 +34,23 @@ class JobPost(models.Model):
         return f"{self.pos_title} ({self.type}) - {self.company}"
 
     def listify(self):
-        return list(map(int, [x for x in self.interested_ids.split(",") if x]))
+        # get candidates
+        candidates = CandidateProfile.objects.get_queryset()
+        # add compat scores
+        for c in candidates:
+            c.compatability_score = calculateCompatScore(c, self)
+            c.save()
+        # sort them by sorting algorithm
+        #candidates = sorted(candidates, key=lambda x: calculateCompatScore(x, self), reverse=True)
+        candidates = sorted(
+            candidates, key=lambda x: x.compatability_score, reverse=True)
+        # identify interested candidates
+        interested = list(
+            map(int, [x for x in self.interested_ids.split(",") if x]))
+        # filter sorted list to only interested candidates
+        candidates = filter(lambda x: x.id in interested, candidates)
+        return candidates
+
 
 class Offer(models.Model):
     job_post = models.ForeignKey(JobPost, on_delete=models.CASCADE)
@@ -48,3 +64,80 @@ class Offer(models.Model):
 
     def decline(self):
         self.accepted = -1
+
+# functions for calculating compatibility score
+
+
+def bioCompare(candidate, posting):
+    numerator = 0
+    denominator = 0
+    for word in candidate:
+        if not word[-1].isalpha():
+            word = word[:-1]
+        if not len(word):
+            continue
+        if word in posting:
+            numerator += 1
+        denominator += 1
+
+    result = numerator/denominator
+    if result < .1:
+        return 0
+    elif result < .3:
+        return .5
+    else:
+        return 1
+
+
+def skillCompare(candidate, posting):
+    numerator = 0
+    denominator = 0
+    for skill in posting:
+        if not skill[-1].isalpha():
+            skill = skill[:-1]
+        if not len(skill):
+            continue
+        if skill in candidate:
+            numerator += 1
+        denominator += 1
+
+    result = numerator/denominator
+    if result < .1:
+        return 0
+    elif result < .3:
+        return .5
+    else:
+        return 1
+
+
+def expCheck(canExp, jobType):
+    if jobType == "full":
+        if canExp > 10:
+            return 1
+        elif canExp > 5:
+            return .5
+    else:
+        if canExp >= 3:
+            return 1
+        else:
+            return .5
+
+
+def calculateCompatScore(candidate, job):
+    compScore = 0
+
+    canBio = candidate.bio.lower().split()
+    canSkills = candidate.skills.lower().split()
+    canExp = candidate.experience
+
+    jobDescrip = job.description.lower().split()
+    jobSkills = job.des_skills.lower().split()
+    jobType = job.type
+
+    compScore += .33*bioCompare(canBio, jobDescrip)
+    compScore += .33*skillCompare(canSkills, jobSkills)
+    compScore += .34*expCheck(canExp, jobType)
+
+    compScore *= 100
+
+    return compScore

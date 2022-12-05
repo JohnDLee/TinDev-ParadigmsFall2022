@@ -23,6 +23,7 @@ class CandidateProfile(models.Model):
     experience = models.IntegerField('Years Of Experience')
     education = models.TextField('Education')
     uninterested_ids = models.TextField('Uninterested IDs', default='')
+    compatability_score = models.FloatField('Compatability Score', default=0)
 
     def __str__(self):
         return f"{self.user.username}"

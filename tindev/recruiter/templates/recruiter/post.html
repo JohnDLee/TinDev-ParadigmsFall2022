@@ -23,39 +23,41 @@
         <br>
         <h3>Interested Candidates:</h3>
         <div class = "list-group">
-        {% for item in post.listify %}
-            {% for candidate in candidates %}
-                {% if candidate.id == item %}
-                    <div>
-                        <a href="/recruiter/post_offer/{{ post.id }}/{{ candidate.id }}/" class="list-group-item list-group-item-action" aria-current="true">
-                        <div class="container text-left">
-                            <div class = "row">
-                                <div class = "column-left">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h4 class="mb-1">{{ candidate.name }}</h4>
-                                        <p class="mb-1">ZIP: {{ candidate.zip_code }}</p>
-                                        <p class="mb-1">github: {{ candidate.github }}</p>
-                                    </div>
-                                </div>
-                                <div class = "column-middle2">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5>Skills:</h5>
-                                        <p class="mb-1">{{candidate.skills}}</p>
-                                    </div>
-                                </div>
-                                <div class = "column-right">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5>Education:</h5>
-                                        <p class="mb-1">{{candidate.education}}</p>
-                                        <p>Years of experience: {{candidate.experience}}</p>
-                                    </div>
-                                </div>
-                            </div>
+        {% for candidate in post.listify %}
+        <div>
+            <a href="/recruiter/post_offer/{{post.id}}/{{candidate.id}}/" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="container text-left">
+                <div class = "row">
+                    <div class = "column-left">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h4 class="mb-1">{{ candidate.name }}</h4>
+                            <p class="mb-1">ZIP: {{ candidate.zip_code }}</p>
+                            <p class="mb-1">github: {{ candidate.github }}</p>
                         </div>
-                    </a>
                     </div>
-                {% endif %}
-            {% endfor %}
+                    <div class = "column-middle">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Skills:</h5>
+                            <p class="mb-1">{{candidate.skills}}</p>
+                        </div>
+                    </div>
+                    <div class = "column-middle2">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Education:</h5>
+                            <p class="mb-1">{{candidate.education}}</p>
+                            <p>Years of experience: {{candidate.experience}}</p>
+                        </div>
+                    </div>
+                    <div class = "column-right">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Compatability Score:</h5>
+                            <p class="mb-1">{{candidate.compatability_score}}%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        </div>
         {% endfor %}
     </div>
 </div>
