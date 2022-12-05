@@ -236,7 +236,7 @@ def post_offer_view(request, pk=None, ck=None):
             return HttpResponseRedirect("/recruiter/homepage/")
 
         # check if already offered
-        if Offer.objects.get(job_post=post, candidate=candidate):
+        if len(Offer.objects.filter(job_post=post, candidate=candidate)):
             return HttpResponseRedirect("/recruiter/homepage/")
 
         # save offer
