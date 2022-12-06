@@ -29,7 +29,9 @@
     </div>
     
     <div class = "list-group">
-        {% for post in job_posts %} 
+        {% for post in job_posts %}
+        {% if post.expire %}
+        {% endif %}  
         <div>
             <a href="/recruiter/post/{{ post.id }}/" class="list-group-item list-group-item-action" aria-current="true">
             <div class="container text-left">

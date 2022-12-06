@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from candidate.models import CandidateProfile
+from datetime import date
 # Create your models here.
 
 
@@ -33,6 +34,12 @@ class JobPost(models.Model):
     def __str__(self):
         return f"{self.pos_title} ({self.type}) - {self.company}"
 
+    def expire(self):
+        if date.today() > self.exp_date:
+            self.status = "Inactive"
+            self.save()
+        return True
+
     def listify(self):
         # get candidates
         candidates = CandidateProfile.objects.get_queryset()
@@ -64,6 +71,9 @@ class Offer(models.Model):
 
     def decline(self):
         self.accepted = -1
+
+    def is_expired(self):
+        return date.today() > self.due_date
 
 # functions for calculating compatibility score
 

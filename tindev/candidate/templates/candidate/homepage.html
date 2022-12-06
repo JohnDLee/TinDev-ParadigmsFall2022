@@ -8,6 +8,7 @@
     <h2>Job Postings</h2>
     <div style="padding:10px">     
             <a class="btn btn-primary" href="/register/logout" role="button">Logout</a>
+            <a class="btn btn-primary" href="/candidate/offers" role="button">View Offers</a>
             <form class = "right-align" method="get">
                 <span style="padding:10px">
                     <input type="radio" name="interestFilter" value="All" class="form-check-input" id="view-method_0" required="">
@@ -34,7 +35,9 @@
     </div>
     
     <div class = "list-group">
-        {% for post in job_posts %} 
+        {% for post in job_posts %}
+        {% if post.expire %}
+        {% endif %}
         <div>
             <a href="/candidate/post/{{ post.id }}/" class="list-group-item list-group-item-action" aria-current="true">
             <div class="container text-left">

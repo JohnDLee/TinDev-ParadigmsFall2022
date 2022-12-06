@@ -1,0 +1,71 @@
+{% extends "candidate_base.html" %}
+
+{% block title %}Candidate Homepage{% endblock %}
+
+{% block content %}
+<div class="div-center-xlarge">
+    <h1><b>{{candidate.name}}'s Dashboard</b></h1>
+    <h2>Job Offers</h2>
+    <div style="padding:10px">     
+            <a class="btn btn-primary" href="/register/logout/" role="button">Logout</a>
+            <a class="btn btn-primary" href="/candidate/homepage/" role="button">Back</a>
+    </div>
+    
+    <div class = "list-group">
+        {% for offer in offers %} 
+        <div>
+            <div class="container text-left">
+                <div class = "row">
+                    <div class = "column-left">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h4 class="mb-1">{{ offer.job_post.pos_title }} at {{ offer.job_post.company }}</h4>
+                            <p class="mb-1">Located: {{ offer.job_post.location }}</p>
+                            <p class="mb-1">{{ offer.job_post.type }}</p>
+                        </div>
+                    </div>
+                    <div class = "column-middle">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Description:</h5>
+                            <p class="mb-1">{{offer.job_post.description}}</p>
+
+                        </div>
+                    </div>
+                    <div class = "column-middle2">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Salary:</h5>
+                            <p class="mb-1">${{offer.yearly_salary}}/year</p>
+                        </div>
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>Expires {{offer.due_date}}</h5>
+                            {{offer.job_post.status}}
+                        </div>
+                    </div>
+                    <div class = "column-right">
+                        {% if offer.accepted == 0%}
+                            {% if offer.is_expired %}
+                                <h5>expired</h5> 
+                            {% else %}
+                                <br>
+                                <a class="btn btn-primary" href="/candidate/offer_accept/{{ offer.id }}/" role="button">Accept</a>
+                                <br>
+                                <br>
+                                <a class="btn btn-primary" href="/candidate/offer_decline/{{ offer.id }}/" role="button">Decline</a>
+                            {% endif %}
+                        {% elif offer.accepted == 1 %}
+                            <h5>accepted</h5>
+                        {% elif offer.accepted == -1%}
+                            <h5>rejected</h5>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            </a>   
+            
+        </div>
+        <hr/>
+
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

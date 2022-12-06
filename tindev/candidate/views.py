@@ -6,6 +6,7 @@ from .forms import CustomCandidateCreationForm
 from django.urls import reverse_lazy
 from recruiter.models import JobPost
 from django.db.models.functions import Lower
+from recruiter.models import Offer
 # Create your views here.
 
 
@@ -188,3 +189,63 @@ def uninterested_view(request, pk=None):
             post.save()
 
     return HttpResponseRedirect('/candidate/homepage')
+
+
+@login_required(login_url=login_url)
+@user_passes_test(candidate_check, login_url=login_url)
+def offers_view(request):
+    # check if candidate profile exists
+    try:
+        candidate = CandidateProfile.objects.get(user=request.user)
+    except CandidateProfile.DoesNotExist:
+        return HttpResponseRedirect('/candidate/profile_creation')
+
+    offers = Offer.objects.filter(candidate=candidate)
+
+    return render(request, 'candidate/offers.html', context={'offers': offers, 'candidate': candidate})
+
+
+@login_required(login_url=login_url)
+@user_passes_test(candidate_check, login_url=login_url)
+def offer_accept_view(request, pk=None):
+    # check if candidate profile exists
+    try:
+        candidate = CandidateProfile.objects.get(user=request.user)
+    except CandidateProfile.DoesNotExist:
+        return HttpResponseRedirect('/candidate/profile_creation')
+
+    offers = list(Offer.objects.filter(candidate=candidate).filter(pk=pk))
+
+    if not len(offers):
+        return HttpResponseRedirect('/candidate/offers')
+
+    offer = Offer.objects.get(pk=pk)
+
+    offer.accept()
+
+    offer.save()
+
+    return HttpResponseRedirect('/candidate/offers')
+
+
+@login_required(login_url=login_url)
+@user_passes_test(candidate_check, login_url=login_url)
+def offer_decline_view(request, pk=None):
+    # check if candidate profile exists
+    try:
+        candidate = CandidateProfile.objects.get(user=request.user)
+    except CandidateProfile.DoesNotExist:
+        return HttpResponseRedirect('/candidate/profile_creation')
+
+    offers = list(Offer.objects.filter(candidate=candidate).filter(pk=pk))
+
+    if not len(offers):
+        return HttpResponseRedirect('/candidate/offers')
+
+    offer = Offer.objects.get(pk=pk)
+
+    offer.decline()
+
+    offer.save()
+
+    return HttpResponseRedirect('/candidate/offers')
