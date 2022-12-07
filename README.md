@@ -5,6 +5,7 @@ by John Lee, Mark Rumsey, and Chris Capone
 - Navigate to `root/register/login`
 - Click Sign up to register for an account.
 - You will be brought back to Login if successful.
+- HI
 
 ### Mark & Chris Tasks
 - [] Finish Designing the Post page. I've finished all the functionality with update and delete.
