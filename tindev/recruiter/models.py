@@ -81,6 +81,13 @@ class Offer(models.Model):
 def bioCompare(candidate, posting):
     numerator = 0
     denominator = 0
+
+    # handle extra chars at end of words, like commas and periods
+    for index, item in enumerate(posting):
+        if not item[-1].isalpha():
+            posting[index] = item[:-1]
+
+    # see how similar candidate bio is to job descrip
     for word in candidate:
         if not word[-1].isalpha():
             word = word[:-1]
@@ -91,17 +98,19 @@ def bioCompare(candidate, posting):
         denominator += 1
 
     result = numerator/denominator
-    if result < .1:
-        return 0
-    elif result < .3:
-        return .5
-    else:
-        return 1
+    return 2*result
 
 
 def skillCompare(candidate, posting):
     numerator = 0
     denominator = 0
+
+    # handle extra chars at end of words, like commas and periods
+    for index, item in enumerate(candidate):
+        if not item[-1].isalpha():
+            candidate[index] = item[:-1]
+
+    # find number of candidate skills in required skills
     for skill in posting:
         if not skill[-1].isalpha():
             skill = skill[:-1]
@@ -112,12 +121,7 @@ def skillCompare(candidate, posting):
         denominator += 1
 
     result = numerator/denominator
-    if result < .1:
-        return 0
-    elif result < .3:
-        return .5
-    else:
-        return 1
+    return result
 
 
 def expCheck(canExp, jobType):
@@ -150,4 +154,7 @@ def calculateCompatScore(candidate, job):
 
     compScore *= 100
 
-    return compScore
+    if compScore > 100:
+        compScore = 100
+
+    return round(compScore, 2)
